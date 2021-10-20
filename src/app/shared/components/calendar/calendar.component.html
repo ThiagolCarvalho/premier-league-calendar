@@ -1,5 +1,5 @@
 <div class="calendar">
-  <div class="month-indicator"> ... </div>
+  <div class="month-text"> October </div>
   <div class="day-grid">
     <div>Sunday</div>
     <div>Monday</div>
@@ -11,36 +11,6 @@
   </div>
 
   <div class="date-grid">
-    <div><time datetime="2021-10-01">1</time></div>
-    <div><time datetime="2021-10-02">2</time></div>
-    <div><time datetime="2021-10-03">3</time></div>
-    <div><time datetime="2021-10-04">4</time></div>
-    <div><time datetime="2021-10-05">5</time></div>
-    <div><time datetime="2021-10-06">6</time></div>
-    <div><time datetime="2021-10-07">7</time></div>
-    <div><time datetime="2021-10-08">8</time></div>
-    <div><time datetime="2021-10-09">9</time></div>
-    <div><time datetime="2021-10-10">10</time></div>
-    <div><time datetime="2021-10-11">11</time></div>
-    <div><time datetime="2021-10-12">12</time></div>
-    <div><time datetime="2021-10-13">13</time></div>
-    <div><time datetime="2021-10-14">14</time></div>
-    <div><time datetime="2021-10-15">15</time></div>
-    <div><time datetime="2021-10-16">16</time></div>
-    <div><time datetime="2021-10-17">17</time></div>
-    <div><time datetime="2021-10-18">18</time></div>
-    <div><time datetime="2021-10-19">19</time></div>
-    <div><time datetime="2021-10-20">20</time></div>
-    <div><time datetime="2021-10-21">21</time></div>
-    <div><time datetime="2021-10-22">22</time></div>
-    <div><time datetime="2021-10-23">23</time></div>
-    <div><time datetime="2021-10-24">24</time></div>
-    <div><time datetime="2021-10-25">25</time></div>
-    <div><time datetime="2021-10-26">26</time></div>
-    <div><time datetime="2021-10-27">27</time></div>
-    <div><time datetime="2021-10-28">28</time></div>
-    <div><time datetime="2021-10-29">29</time></div>
-    <div><time datetime="2021-10-30">30</time></div>
-    <div><time datetime="2021-10-31">31</time></div>
+    <div *ngFor="let number of daysInMonth"><time [dateTime]="'2021-10-01'">{{number}}</time></div>
   </div>
 </div>
