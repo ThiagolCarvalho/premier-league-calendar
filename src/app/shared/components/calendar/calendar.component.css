@@ -1,0 +1,13 @@
+.day-grid,
+.date-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.date-grid div:first-child {
+  grid-column: 1;
+}
+
+.date-grid div {
+  height: 200px;
+}
