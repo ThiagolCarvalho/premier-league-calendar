@@ -1,13 +1,7 @@
 <div class="calendar">
-  <div class="month-text"> October </div>
+  <div class="month-text"> {{monthName.toUpperCase()}} </div>
   <div class="day-grid">
-    <div>Sunday</div>
-    <div>Monday</div>
-    <div>Tuesday</div>
-    <div>Wednesday</div>
-    <div>Thursday</div>
-    <div>Friday</div>
-    <div>Saturday</div>
+    <div *ngFor="let day of daysOfTheWeek">{{day}}</div>
   </div>
 
   <div class="date-grid">

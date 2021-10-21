@@ -6,14 +6,12 @@ import { AppComponent } from './app.component';
 import {HeaderComponent} from './shared/components/header/header.component';
 import {HttpClientModule} from '@angular/common/http';
 import {FooterComponent} from "./shared/components/footer/footer.component";
-import {CalendarComponent} from "./shared/components/calendar/calendar.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent,
-    CalendarComponent
+    FooterComponent
   ],
   imports: [
     BrowserModule,
