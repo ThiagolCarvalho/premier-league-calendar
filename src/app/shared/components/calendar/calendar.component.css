@@ -4,6 +4,14 @@
   grid-template-columns: repeat(7, 1fr);
 }
 
+.grid-border {
+  border: 1px solid black !important;
+}
+
+.background-white {
+  background-color: white;
+}
+
 .date-grid div:first-child {
   grid-column: 1;
 }
@@ -32,8 +40,12 @@
   grid-column: 7;
 }
 
-.date-grid div {
+.calendar-day-minimum-height {
+  min-height: 200px
+}
 
+.calendar-event-text-size {
+  font-size: 0.65rem;
 }
 
 .calendar {

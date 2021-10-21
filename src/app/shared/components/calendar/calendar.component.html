@@ -7,14 +7,14 @@
     </div>
   </div>
 
-  <div class="day-grid">
-    <div *ngFor="let day of daysOfTheWeek">{{day}}</div>
+  <div class="day-grid background-white text-center">
+    <div class="grid-border" *ngFor="let day of daysOfTheWeek">{{day}}</div>
   </div>
 
   <div class="date-grid" [class]="startDay">
-    <div style="min-height: 200px" *ngFor="let calendarDay of calendarDays">
+    <div class="calendar-day-minimum-height grid-border background-white" *ngFor="let calendarDay of calendarDays">
       <div>{{calendarDay.day}}</div>
-      <div style="font-size: 0.65rem" *ngFor="let match of calendarDay.matches">{{match.team1}} x {{match.team2}}</div>
+      <div class="calendar-event-text-size" *ngFor="let match of calendarDay.matches">{{match.team1}} x {{match.team2}}</div>
     </div>
   </div>
 </div>
