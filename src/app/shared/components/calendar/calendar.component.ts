@@ -12,24 +12,25 @@ export class CalendarComponent implements OnChanges {
 
   public daysInMonth: number[] = [];
   public title: string = '';
-  public daysOfTheWeek: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  public daysOfTheWeek: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   public startDay: string = 'first-day';
   public calendarDays: ICalendarDay[] = []
+  public selectedDate: Date = new Date(2019, 7);
 
   constructor() {
+    this.loadCalendar(this.selectedDate);
   }
 
   ngOnChanges() {
-    this.calendarDays = [];
-    this.loadCalendar();
+    this.loadCalendar(this.selectedDate);
   }
 
-  private loadCalendar() {
-    const now = new Date(2019, 11, 22)
-    this.setDaysInMonth(now.getFullYear(), now.getMonth() + 1);
-    this.setCalendar(now);
-    this.setMonth(now);
-    this.setStartDay(now);
+  private loadCalendar(date: Date) {
+    this.calendarDays = [];
+    this.setDaysInMonth(date.getFullYear(), date.getMonth() + 1);
+    this.setCalendar(date);
+    this.setMonth(date);
+    this.setStartDay(date);
   }
 
   private setCalendar(date: Date) {
@@ -39,10 +40,16 @@ export class CalendarComponent implements OnChanges {
       if (+day < 10) {
         day = '0' + day;
       }
-      const matches = this.data.matches.filter(match => match.date === `${date.getFullYear()}-${date.getMonth()+1}-${day}`)
+
+      let month = (date.getMonth()+1).toString();
+
+      if (+month < 10) {
+        month = '0' + month;
+      }
+
+      const matches = this.data.matches.filter(match => match.date === `${date.getFullYear()}-${month}-${day}`)
       this.calendarDays.push({day: day, matches: matches})
     })
-    console.log(this.calendarDays);
   }
 
   private setDaysInMonth(year: number, month: number) {
@@ -90,6 +97,16 @@ export class CalendarComponent implements OnChanges {
         break;
       }
     }
+  }
+
+  public previousMonth() {
+    this.selectedDate.setMonth(this.selectedDate.getMonth() - 1)
+    this.loadCalendar(this.selectedDate);
+  }
+
+  public nextMonth() {
+    this.selectedDate.setMonth(this.selectedDate.getMonth() + 1)
+    this.loadCalendar(this.selectedDate);
   }
 
 }
