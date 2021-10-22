@@ -1,9 +1,9 @@
 <div class="calendar">
   <div class="month-text">
-    {{title.toUpperCase()}}
+    <span>{{title.toUpperCase()}}</span>
     <div style="float: right">
-      <button (click)="previousMonth()"><-</button>
-      <button (click)="nextMonth()">-></button>
+      <button (click)="previousMonth()">↑</button>
+      <button (click)="nextMonth()">↓</button>
     </div>
   </div>
 
@@ -13,7 +13,8 @@
 
   <div class="date-grid" [class]="startDay">
     <div class="calendar-day-minimum-height grid-border background-white" *ngFor="let calendarDay of calendarDays">
-      <div>{{calendarDay.day}}</div>
+      <time [dateTime]="selectedDate.getFullYear() + '-' + selectedDate.getMonth() + '-' + calendarDay.day"
+      >{{calendarDay.day}}</time>
       <div class="calendar-event-text-size" *ngFor="let match of calendarDay.matches">{{match.team1}} x {{match.team2}}</div>
     </div>
   </div>

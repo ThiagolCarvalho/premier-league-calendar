@@ -10,7 +10,6 @@ import {ICalendarDay} from "../../models/ICalendar";
 export class CalendarComponent implements OnChanges {
   @Input() data: IPremierLeague = {name: '', matches: []};
 
-  public daysInMonth: number[] = [];
   public title: string = '';
   public daysOfTheWeek: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   public startDay: string = 'first-day';
@@ -27,84 +26,94 @@ export class CalendarComponent implements OnChanges {
 
   private loadCalendar(date: Date) {
     this.calendarDays = [];
-    this.setDaysInMonth(date.getFullYear(), date.getMonth() + 1);
     this.setCalendar(date);
     this.setMonth(date);
-    this.setStartDay(date);
   }
 
-  private setCalendar(date: Date) {
+  private setCalendar(date: Date): void {
     const countDaysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-    const days = new Array(countDaysInMonth).fill(0).map((x,i)=>(i+1).toString());
+    const firstDayIndex = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+
+    let monthBeforeDaysCount = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+
+    let arrayMonthBefore = [] as string[];
+    let arrayMonthAfter = [] as string[];
+
+    for (let i = firstDayIndex; i > 0; i--) {
+      arrayMonthBefore.push(monthBeforeDaysCount.toString());
+      monthBeforeDaysCount--;
+    }
+
+    const days = new Array(countDaysInMonth).fill(null).map((x,i)=>this.checkLeftPad((i+1).toString()));
+
+    arrayMonthBefore = arrayMonthBefore.reverse()
+
+    const calendarDaysBefore = [] as ICalendarDay[]
+    const calendarDaysAfter = [] as ICalendarDay[]
+
+    let passedMonth = new Date(date);
+    passedMonth.setMonth(passedMonth.getMonth() - 1);
+    arrayMonthBefore.forEach(day => {
+      const month = this.checkLeftPad((passedMonth.getMonth() + 1).toString());
+      const matches = this.data.matches.filter(match => match.date === `${passedMonth.getFullYear()}-${month}-${day}`)
+      calendarDaysBefore.push({day: day, matches: matches})
+    })
+
     days.forEach(day => {
-      if (+day < 10) {
-        day = '0' + day;
-      }
-
-      let month = (date.getMonth()+1).toString();
-
-      if (+month < 10) {
-        month = '0' + month;
-      }
-
+      const month = this.checkLeftPad((date.getMonth() + 1).toString());
       const matches = this.data.matches.filter(match => match.date === `${date.getFullYear()}-${month}-${day}`)
       this.calendarDays.push({day: day, matches: matches})
     })
+
+    this.calendarDays = calendarDaysBefore.concat(this.calendarDays).concat(calendarDaysAfter);
+
+
+    let startDay = 1;
+    for (let i = this.calendarDays.length; i < 42; i++) {
+      arrayMonthAfter.push(this.checkLeftPad(startDay.toString()));
+      startDay++;
+    }
+
+    let nextMonth = new Date(date);
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    arrayMonthAfter.forEach(day => {
+      const month = this.checkLeftPad((nextMonth.getMonth() + 1).toString());
+      const formatedDate = `${nextMonth.getFullYear()}-${month}-${day}`
+      const matches = this.data.matches.filter(match => match.date === formatedDate)
+      calendarDaysAfter.push({day: day, matches: matches})
+    })
+
+    this.calendarDays = this.calendarDays.concat(calendarDaysAfter);
   }
 
-  private setDaysInMonth(year: number, month: number) {
-    const countDaysInMonth = new Date(year, month, 0).getDate()
-    this.daysInMonth = new Array(countDaysInMonth).fill(0).map((x,i)=>i+1);
+  private calendarDayFactory(array: string[], selectedDate: Date): ICalendarDay[] {
+    const calendarDayArray = [] as ICalendarDay[];
+    array.forEach(day => {
+      const month = this.checkLeftPad((selectedDate.getMonth() + 1).toString());
+      const matches = this.data.matches.filter(match => match.date === `${selectedDate.getFullYear()}-${month}-${day}`)
+      calendarDayArray.push({day: day, matches: matches})
+    })
+    return calendarDayArray;
   }
 
-  private setMonth(date: Date) {
+  private setMonth(date: Date): void {
     this.title = date.getFullYear() + ' - ' + date.toLocaleString('en', { month: 'long' });
   }
 
-  private setStartDay(date: Date) {
-    const dayIndex = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-    switch (dayIndex) {
-      case 0: {
-        this.startDay = 'first-day';
-        break;
-      }
-      case 1: {
-        this.startDay = 'second-day';
-        break;
-      }
-      case 2: {
-        this.startDay = 'third-day';
-        break;
-      }
-      case 3: {
-        this.startDay = 'fourth-day';
-        break;
-      }
-      case 4: {
-        this.startDay = 'fifth-day';
-        break;
-      }
-      case 5: {
-        this.startDay = 'sixth-day';
-        break;
-      }
-      case 6: {
-        this.startDay = 'seventh-day';
-        break;
-      }
-      default: {
-        this.startDay = 'first-day';
-        break;
-      }
+  checkLeftPad(text: string): string {
+    if (+text < 10) {
+      return '0' + text;
+    } else {
+      return text;
     }
   }
 
-  public previousMonth() {
+  public previousMonth(): void {
     this.selectedDate.setMonth(this.selectedDate.getMonth() - 1)
     this.loadCalendar(this.selectedDate);
   }
 
-  public nextMonth() {
+  public nextMonth(): void {
     this.selectedDate.setMonth(this.selectedDate.getMonth() + 1)
     this.loadCalendar(this.selectedDate);
   }

@@ -12,36 +12,8 @@
   background-color: white;
 }
 
-.date-grid div:first-child {
-  grid-column: 1;
-}
-
-.second-day div:first-child {
-  grid-column: 2;
-}
-
-.third-day div:first-child {
-  grid-column: 3;
-}
-
-.fourth-day div:first-child {
-  grid-column: 4;
-}
-
-.fifth-day div:first-child {
-  grid-column: 5;
-}
-
-.sixth-day div:first-child {
-  grid-column: 6;
-}
-
-.seventh-day div:first-child {
-  grid-column: 7;
-}
-
 .calendar-day-minimum-height {
-  min-height: 200px
+  min-height: 100px
 }
 
 .calendar-event-text-size {
