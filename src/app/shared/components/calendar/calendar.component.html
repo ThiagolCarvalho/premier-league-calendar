@@ -11,10 +11,9 @@
     <div class="grid-border" *ngFor="let day of daysOfTheWeek">{{day}}</div>
   </div>
 
-  <div class="date-grid" [class]="startDay">
-    <div class="calendar-day-minimum-height grid-border background-white" *ngFor="let calendarDay of calendarDays">
-      <time [dateTime]="selectedDate.getFullYear() + '-' + selectedDate.getMonth() + '-' + calendarDay.day"
-      >{{calendarDay.day}}</time>
+  <div class="date-grid">
+    <div class="calendar-day-minimum-height grid-border background-white" *ngFor="let calendarDay of calendarDays" [class]="getMonthClass(calendarDay)">
+      <time [dateTime]="selectedDate.getFullYear() + '-' + selectedDate.getMonth() + '-' + calendarDay.day">{{calendarDay.day}}</time>
       <div class="calendar-event-text-size" *ngFor="let match of calendarDay.matches">{{match.team1}} x {{match.team2}}</div>
     </div>
   </div>
