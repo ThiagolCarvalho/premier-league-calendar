@@ -19,48 +19,66 @@ export class CalendarComponent implements OnChanges {
     this.loadCalendar(this.selectedDate);
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.loadCalendar(this.selectedDate);
   }
 
-  private loadCalendar(date: Date) {
+  private loadCalendar(date: Date): void {
     this.calendarDays = [];
     this.setCalendar(date);
     this.setTitle(date);
   }
 
   private setCalendar(date: Date): void {
-    const countDaysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+    this.calendarDays = this.initCalendar(date);
+  }
+
+  private initCalendar(date: Date): ICalendarDay[] {
+    const pastMonthDaysArray = this.pastMonthArray(date);
+    const pastMonth = this.createDate(date, -1);
+    const currentMonthDaysArray = this.currentMonthArray(date);
+
+    const pastMonthCalendarArray = this.calendarDayFactory(pastMonthDaysArray, pastMonth);
+    const currentMonthCalendarArray = this.calendarDayFactory(currentMonthDaysArray, date);
+    const pastAndCurrentMonthCalendarArray = pastMonthCalendarArray.concat(currentMonthCalendarArray);
+
+    const nextMonthDaysArray = this.nextMonthArray(pastAndCurrentMonthCalendarArray);
+    let nextMonth = this.createDate(date, +1);
+
+    const nextMonthCalendarArray = this.calendarDayFactory(nextMonthDaysArray, nextMonth);
+    return pastAndCurrentMonthCalendarArray.concat(nextMonthCalendarArray);
+  }
+
+  private createDate(date: Date, index: number): Date {
+    const month  = new Date(date);
+    month.setMonth(month.getMonth() + index);
+    return month;
+  }
+
+  private pastMonthArray(date: Date): string[] {
+    let pastMonthDays = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
     const firstDayIndex = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-
-    let monthBeforeDaysCount = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
-
-    let pastMonthDays = [] as string[];
-    const currentMonthDays = new Array(countDaysInMonth).fill(null).map((x,i)=>this.checkLeftPad((i+1).toString()));
-    let nextMonthDays = [] as string[];
-
+    const pastMonthDaysArray = [] as string[];
     for (let i = firstDayIndex; i > 0; i--) {
-      pastMonthDays.push(monthBeforeDaysCount.toString());
-      monthBeforeDaysCount--;
+      pastMonthDaysArray.push(pastMonthDays.toString());
+      pastMonthDays--;
     }
+    return pastMonthDaysArray.reverse();
+  }
 
-    pastMonthDays = pastMonthDays.reverse()
+  private currentMonthArray(date: Date): string[] {
+    const currentMonthDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+    return new Array(currentMonthDays).fill(null).map((x,i)=>this.checkLeftPad((i+1).toString()));
+  }
 
-    let passedMonth = new Date(date);
-    passedMonth.setMonth(passedMonth.getMonth() - 1);
-
-    this.calendarDays = this.calendarDayFactory(pastMonthDays, passedMonth).concat(this.calendarDayFactory(currentMonthDays, date))
-
+  private nextMonthArray(calendarArray: ICalendarDay[]): string[] {
     let startDay = 1;
-    for (let i = this.calendarDays.length; i < 42; i++) {
-      nextMonthDays.push(this.checkLeftPad(startDay.toString()));
+    const nextMonthDaysArray = [] as string[];
+    for (let i = calendarArray.length; i < 42; i++) {
+      nextMonthDaysArray.push(this.checkLeftPad(startDay.toString()));
       startDay++;
     }
-
-    let nextMonth = new Date(date);
-    nextMonth.setMonth(nextMonth.getMonth() + 1);
-
-    this.calendarDays = this.calendarDays.concat(this.calendarDayFactory(nextMonthDays, nextMonth));
+    return nextMonthDaysArray;
   }
 
   private calendarDayFactory(array: string[], selectedDate: Date): ICalendarDay[] {

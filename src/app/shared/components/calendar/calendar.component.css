@@ -16,12 +16,16 @@
   min-height: 100px
 }
 
-.calendar-event-text-size {
+.calendar-event-text {
   font-size: 0.65rem;
+  margin-bottom: 5px;
+  margin-left: 5px;
 }
 
-.calendar {
-
+.calendar-buttons-position {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .other-month {

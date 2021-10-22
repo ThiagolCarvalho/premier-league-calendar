@@ -1,7 +1,7 @@
 <div class="calendar">
-  <div class="month-text">
+  <div class="month-text position-relative">
     <span>{{title.toUpperCase()}}</span>
-    <div style="float: right">
+    <div class="calendar-buttons-position">
       <button (click)="previousMonth()">↑</button>
       <button (click)="nextMonth()">↓</button>
     </div>
@@ -14,7 +14,9 @@
   <div class="date-grid">
     <div class="calendar-day-minimum-height grid-border background-white" *ngFor="let calendarDay of calendarDays" [class]="getMonthClass(calendarDay)">
       <time [dateTime]="selectedDate.getFullYear() + '-' + selectedDate.getMonth() + '-' + calendarDay.day">{{calendarDay.day}}</time>
-      <div class="calendar-event-text-size" *ngFor="let event of calendarDay.events">{{event.title}}</div>
+      <div class="calendar-event-text" *ngFor="let event of calendarDay.events; let index = index">
+        {{index+1 + ' - ' + event.title}}
+      </div>
     </div>
   </div>
 </div>
