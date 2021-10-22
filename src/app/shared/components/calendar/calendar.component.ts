@@ -35,23 +35,24 @@ export class CalendarComponent implements OnChanges {
 
   private initCalendar(date: Date): ICalendarDay[] {
     const pastMonthDaysArray = this.pastMonthArray(date);
-    const pastMonth = this.createDate(date, -1);
-    const currentMonthDaysArray = this.currentMonthArray(date);
-
+    const pastMonth = this.dateShift(date, -1);
     const pastMonthCalendarArray = this.calendarDayFactory(pastMonthDaysArray, pastMonth);
+
+    const currentMonthDaysArray = this.currentMonthArray(date);
     const currentMonthCalendarArray = this.calendarDayFactory(currentMonthDaysArray, date);
+
     const pastAndCurrentMonthCalendarArray = pastMonthCalendarArray.concat(currentMonthCalendarArray);
 
     const nextMonthDaysArray = this.nextMonthArray(pastAndCurrentMonthCalendarArray);
-    let nextMonth = this.createDate(date, +1);
+    let nextMonth = this.dateShift(date, +1);
 
     const nextMonthCalendarArray = this.calendarDayFactory(nextMonthDaysArray, nextMonth);
     return pastAndCurrentMonthCalendarArray.concat(nextMonthCalendarArray);
   }
 
-  private createDate(date: Date, index: number): Date {
+  private dateShift(date: Date, shift: number): Date {
     const month  = new Date(date);
-    month.setMonth(month.getMonth() + index);
+    month.setMonth(month.getMonth() + shift);
     return month;
   }
 
@@ -68,14 +69,14 @@ export class CalendarComponent implements OnChanges {
 
   private currentMonthArray(date: Date): string[] {
     const currentMonthDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-    return new Array(currentMonthDays).fill(null).map((x,i)=>this.checkLeftPad((i+1).toString()));
+    return new Array(currentMonthDays).fill(null).map((x,i)=>this.checkLeftZero((i+1).toString()));
   }
 
   private nextMonthArray(calendarArray: ICalendarDay[]): string[] {
     let startDay = 1;
     const nextMonthDaysArray = [] as string[];
     for (let i = calendarArray.length; i < 42; i++) {
-      nextMonthDaysArray.push(this.checkLeftPad(startDay.toString()));
+      nextMonthDaysArray.push(this.checkLeftZero(startDay.toString()));
       startDay++;
     }
     return nextMonthDaysArray;
@@ -84,9 +85,10 @@ export class CalendarComponent implements OnChanges {
   private calendarDayFactory(array: string[], selectedDate: Date): ICalendarDay[] {
     const calendarDayArray = [] as ICalendarDay[];
     array.forEach(day => {
-      const month = this.checkLeftPad((selectedDate.getMonth() + 1).toString());
-      const events = this.events.filter(event => event.date === `${selectedDate.getFullYear()}-${month}-${day}`)
-      calendarDayArray.push({day: day, month: selectedDate.getMonth().toString(), events: events})
+      const month = this.checkLeftZero((selectedDate.getMonth() + 1).toString());
+      const year = selectedDate.getFullYear().toString();
+      const events = this.events.filter(event => event.date === `${year}-${month}-${day}`)
+      calendarDayArray.push({day: day, month: month, year: year, events: events})
     })
     return calendarDayArray;
   }
@@ -95,7 +97,7 @@ export class CalendarComponent implements OnChanges {
     this.title = date.getFullYear() + ' - ' + date.toLocaleString('en', { month: 'long' });
   }
 
-  private checkLeftPad(text: string): string {
+  private checkLeftZero(text: string): string {
     if (+text < 10) {
       return '0' + text;
     } else {
@@ -114,7 +116,9 @@ export class CalendarComponent implements OnChanges {
   }
 
   public getMonthClass(calendarDay: ICalendarDay): string {
-    return calendarDay.month != this.selectedDate.getMonth().toString() ? 'other-month' : 'present-month'
+    const month = (this.selectedDate.getMonth()+1).toString()
+    const monthChecked = this.checkLeftZero(month)
+    return calendarDay.month != monthChecked ? 'other-month' : 'present-month'
   }
 
 }

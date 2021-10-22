@@ -13,7 +13,7 @@
 
   <div class="date-grid">
     <div class="calendar-day-minimum-height grid-border background-white" *ngFor="let calendarDay of calendarDays" [class]="getMonthClass(calendarDay)">
-      <time [dateTime]="selectedDate.getFullYear() + '-' + selectedDate.getMonth() + '-' + calendarDay.day">{{calendarDay.day}}</time>
+      <time [dateTime]="calendarDay.year + '-' + calendarDay.month + '-' + calendarDay.day">{{calendarDay.day}}</time>
       <div class="calendar-event-text" *ngFor="let event of calendarDay.events; let index = index">
         <span>{{index+1 + ' - ' + event.title}}</span>
       </div>
