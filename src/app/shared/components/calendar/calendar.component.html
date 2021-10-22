@@ -14,7 +14,7 @@
   <div class="date-grid">
     <div class="calendar-day-minimum-height grid-border background-white" *ngFor="let calendarDay of calendarDays" [class]="getMonthClass(calendarDay)">
       <time [dateTime]="selectedDate.getFullYear() + '-' + selectedDate.getMonth() + '-' + calendarDay.day">{{calendarDay.day}}</time>
-      <div class="calendar-event-text-size" *ngFor="let match of calendarDay.matches">{{match.team1}} x {{match.team2}}</div>
+      <div class="calendar-event-text-size" *ngFor="let event of calendarDay.events">{{event.title}}</div>
     </div>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges} from '@angular/core';
-import {IPremierLeague} from "../../models/IPremierLeague";
 import {ICalendarDay} from "../../models/ICalendar";
+import {IEvent} from "../../models/IEvent";
 
 @Component({
   selector: 'app-calendar',
@@ -8,7 +8,7 @@ import {ICalendarDay} from "../../models/ICalendar";
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnChanges {
-  @Input() data: IPremierLeague = {name: '', matches: []};
+  @Input() events: IEvent[] = [];
 
   public title: string = '';
   public daysOfTheWeek: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -26,7 +26,7 @@ export class CalendarComponent implements OnChanges {
   private loadCalendar(date: Date) {
     this.calendarDays = [];
     this.setCalendar(date);
-    this.setMonth(date);
+    this.setTitle(date);
   }
 
   private setCalendar(date: Date): void {
@@ -67,17 +67,17 @@ export class CalendarComponent implements OnChanges {
     const calendarDayArray = [] as ICalendarDay[];
     array.forEach(day => {
       const month = this.checkLeftPad((selectedDate.getMonth() + 1).toString());
-      const matches = this.data.matches.filter(match => match.date === `${selectedDate.getFullYear()}-${month}-${day}`)
-      calendarDayArray.push({day: day, month: selectedDate.getMonth().toString(),matches: matches})
+      const events = this.events.filter(event => event.date === `${selectedDate.getFullYear()}-${month}-${day}`)
+      calendarDayArray.push({day: day, month: selectedDate.getMonth().toString(), events: events})
     })
     return calendarDayArray;
   }
 
-  private setMonth(date: Date): void {
+  private setTitle(date: Date): void {
     this.title = date.getFullYear() + ' - ' + date.toLocaleString('en', { month: 'long' });
   }
 
-  checkLeftPad(text: string): string {
+  private checkLeftPad(text: string): string {
     if (+text < 10) {
       return '0' + text;
     } else {
@@ -95,8 +95,8 @@ export class CalendarComponent implements OnChanges {
     this.loadCalendar(this.selectedDate);
   }
 
-  public getMonthClass(calendarDay: any) {
-    return calendarDay.month != this.selectedDate.getMonth() ? 'other-month' : 'present-month'
+  public getMonthClass(calendarDay: ICalendarDay): string {
+    return calendarDay.month != this.selectedDate.getMonth().toString() ? 'other-month' : 'present-month'
   }
 
 }

@@ -1,7 +1,7 @@
-import {IMatch} from "./IMatch";
+import {IEvent} from "./IEvent";
 
 export interface ICalendarDay {
   day: string;
   month: string;
-  matches: IMatch[];
+  events: IEvent[];
 }
