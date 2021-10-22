@@ -13,7 +13,7 @@ export class CalendarComponent implements OnChanges {
   public title: string = '';
   public daysOfTheWeek: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   public calendarDays: ICalendarDay[] = []
-  public selectedDate: Date = new Date(2019, 7);
+  public selectedDate: Date = new Date();
 
   constructor() {
     this.loadCalendar(this.selectedDate);
