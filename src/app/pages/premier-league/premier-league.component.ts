@@ -21,7 +21,7 @@ export class PremierLeagueComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  private initEvents(premierLeague: IPremierLeague) {
+  private initEvents(premierLeague: IPremierLeague): void {
     const events = [] as IEvent[];
     premierLeague.matches.map(a => {
       const event = {} as IEvent;
