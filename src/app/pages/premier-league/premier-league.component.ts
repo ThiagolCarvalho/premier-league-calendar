@@ -23,10 +23,10 @@ export class PremierLeagueComponent implements OnInit {
 
   private initEvents(premierLeague: IPremierLeague): void {
     const events = [] as IEvent[];
-    premierLeague.matches.map(a => {
+    premierLeague.matches.forEach(match => {
       const event = {} as IEvent;
-      event.title = `[${a.team1}] x [${a.team2}]`;
-      event.date = a.date;
+      event.title = `[${match.team1}] x [${match.team2}]`;
+      event.date = match.date;
       events.push(event);
     });
     this.events = events;

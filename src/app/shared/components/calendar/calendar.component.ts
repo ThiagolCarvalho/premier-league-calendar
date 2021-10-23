@@ -69,7 +69,7 @@ export class CalendarComponent implements OnChanges {
 
   private currentMonthArray(date: Date): string[] {
     const currentMonthDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-    return new Array(currentMonthDays).fill(null).map((x,i)=>this.checkLeftZero((i+1).toString()));
+    return new Array(currentMonthDays).fill(null).map((x,index)=> this.checkLeftZero((index+1).toString()));
   }
 
   private nextMonthArray(calendarArray: ICalendarDay[]): string[] {
