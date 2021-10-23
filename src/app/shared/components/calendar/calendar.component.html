@@ -1,0 +1,22 @@
+<div>
+  <div class="month-text position-relative">
+    <span>{{title.toUpperCase()}}</span>
+    <div class="calendar-buttons-position">
+      <button (click)="previousMonth()">↑</button>
+      <button (click)="nextMonth()">↓</button>
+    </div>
+  </div>
+
+  <div class="day-grid background-white text-center">
+    <div class="grid-border" *ngFor="let day of daysOfTheWeek">{{day}}</div>
+  </div>
+
+  <div class="date-grid">
+    <div class="calendar-day-minimum-height grid-border background-white" *ngFor="let calendarDay of calendarDays" [class]="getMonthClass(calendarDay)">
+      <time [dateTime]="calendarDay.year + '-' + calendarDay.month + '-' + calendarDay.day">{{calendarDay.day}}</time>
+      <div class="calendar-event-text" *ngFor="let event of calendarDay.events; let index = index">
+        <span>{{index+1 + ' - ' + event.title}}</span>
+      </div>
+    </div>
+  </div>
+</div>

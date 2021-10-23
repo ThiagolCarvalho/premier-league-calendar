@@ -1,0 +1,43 @@
+.day-grid,
+.date-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.grid-border {
+  border: 1px solid black !important;
+}
+
+.background-white {
+  background-color: white;
+}
+
+.calendar-day-minimum-height {
+  min-height: 100px
+}
+
+.calendar-event-text {
+  font-size: 0.65rem;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.calendar-buttons-position {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.other-month {
+  color: gray;
+  opacity: 0.8;
+}
+
+.present-month {
+  font-weight: bold;
+}
+
+.month-text {
+  text-align: center;
+  font-size: 30px;
+}
